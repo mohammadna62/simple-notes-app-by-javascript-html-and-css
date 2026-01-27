@@ -6,12 +6,35 @@ const closeElm = document.querySelector(".close");
 const continueElm = document.querySelector(".continue");
 const notesContainer = document.querySelector(".notes-container");
 const editorElm = document.querySelector("#editor");
+const searchInput = document.querySelector(".search-input");
+const searchBtn = document.querySelector(".search-btn");
 
 createButton.addEventListener("click", showModal);
 closeXBtn.addEventListener("click", closeModal);
 closeElm.addEventListener("click", closeModal);
 continueElm.addEventListener("click", closeModalAndCreate);
 document.body.addEventListener("keydown", closeModalWithEscape);
+searchBtn.addEventListener("click", searchInNotes);
+searchBtn.addEventListener("blur", function () {
+  searchInput.value = "";
+  searchInNotes();
+});
+
+//<----------------------functions--------------------->
+//<--------Search from Notes function------>
+function searchInNotes() {
+  const searchValue = searchInput.value;
+  const notes = document.querySelectorAll(".note");
+
+  notes.forEach(function (note) {
+    const noteContentElem = note.querySelector(".note-content");
+    if (noteContentElem.innerHTML.includes(searchValue)) {
+      note.style.display = "flex";
+    } else {
+      note.style.display = "none";
+    }
+  });
+}
 let dataColor;
 colorBox.forEach(function (item) {
   item.addEventListener("click", function (event) {
@@ -22,14 +45,16 @@ colorBox.forEach(function (item) {
   });
 });
 
-//<----------------------functions--------------------->
+//<--------Show Modal function------>
 
 function showModal() {
   modalScreen.classList.remove("hidden");
 }
+//<-------Close Modal function------>
 function closeModal() {
   modalScreen.classList.add("hidden");
 }
+//<-------------Create Note functions---------->
 function closeModalAndCreate() {
   const note = editorElm.value;
   const parentArticleElem = document.createElement("article");
@@ -54,6 +79,7 @@ function closeModalAndCreate() {
   editorElm.value = "";
   closeModal();
 }
+//<-----Close Modal with Escape key On Keyboard function------>
 function closeModalWithEscape(event) {
   if (event.key === "Escape") {
     modalScreen.classList.add("hidden");
