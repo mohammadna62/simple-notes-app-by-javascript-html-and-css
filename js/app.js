@@ -9,6 +9,7 @@ const editorElm = document.querySelector("#editor");
 const searchInput = document.querySelector(".search-input");
 const searchBtn = document.querySelector(".search-btn");
 
+notesContainer.addEventListener('click', removeNote)
 createButton.addEventListener("click", showModal);
 closeXBtn.addEventListener("click", closeModal);
 closeElm.addEventListener("click", closeModal);
@@ -68,9 +69,10 @@ function closeModalAndCreate() {
   const trashParentDiv = document.createElement("div");
   const noteTrashElem = document.createElement("i");
   noteTrashElem.className = "fa-solid fa-trash delete";
-  noteTrashElem.addEventListener("click", function (event) {
-    event.target.parentElement.parentElement.remove();
-  });
+  //! after Refactor ,Used the closeModalWithEscape function "Event Delegation" Method
+  // noteTrashElem.addEventListener("click", function (event) {
+  //   event.target.parentElement.parentElement.remove();
+  // });
   trashParentDiv.append(noteTrashElem);
   parentArticleElem.append(noteContentElem);
   parentArticleElem.append(trashParentDiv);
@@ -78,6 +80,11 @@ function closeModalAndCreate() {
   notesContainer.append(parentArticleElem);
   editorElm.value = "";
   closeModal();
+}
+function removeNote (event){
+  if(event.target.className.includes("fa-trash delete")){
+    event.target.parentElement.parentElement.remove()
+  }
 }
 //<-----Close Modal with Escape key On Keyboard function------>
 function closeModalWithEscape(event) {
